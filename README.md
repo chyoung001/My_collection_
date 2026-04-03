@@ -40,7 +40,7 @@
 > 
 
 <p align="center">
-  <img src="Screenshot/시세검색.png" width="100%"/>
+  <img src="Screenshot/시세추적.png" width="100%"/>
 </p>
 
 
