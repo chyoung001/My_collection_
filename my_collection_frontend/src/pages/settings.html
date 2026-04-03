@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">
+        <span class="font-poppins font-bold">My Collection</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="./dashboard.html"><i class="ri-dashboard-line"></i><span>Dashboard</span></a>
+        <a class="nav-item" href="./collection.html"><i class="ri-stack-line"></i><span>My Collection</span></a>
+        <a class="nav-item" href="./market-trends.html"><i class="ri-line-chart-line"></i><span>Market Trends</span></a>
+        <a class="nav-item active" href="./settings.html"><i class="ri-settings-3-line"></i><span>Settings</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="profile-card">
+          <div class="avatar"><i class="ri-user-line"></i></div>
+          <div class="profile-meta">
+            <p class="profile-name">Collector</p>
+            <p class="profile-tier">Premium</p>
+          </div>
+          <i class="ri-arrow-right-s-line profile-chevron"></i>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="header">
+      <div>
+        <h2 class="font-poppins font-bold text-xl">Settings</h2>
+        <p class="text-xs text-muted" style="margin-top: 6px;">Home &gt; Settings</p>
+      </div>
+      <div class="header-right">
+        <div class="searchbar">
+          <i class="ri-search-line"></i>
+          <input type="text" placeholder="Search by player, cert number..." aria-label="search">
+          <button class="icon-btn" type="button" aria-label="filter"><i class="ri-filter-3-line"></i></button>
+        </div>
+        <button class="icon-btn notif-btn" type="button" aria-label="notifications">
+          <i class="ri-notification-3-line"></i>
+          <span class="dot"></span>
+        </button>
+        <button class="icon-btn profile-btn" type="button" aria-label="profile">
+          <i class="ri-user-line"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="glass-card" style="padding: 48px; text-align: center;">
+        <div class="icon-box" style="margin: 0 auto 16px;"><i class="ri-time-line text-2xl text-gold"></i></div>
+        <h3 class="font-poppins font-bold text-2xl" style="margin-bottom: 10px;">추후 추가예정입니다</h3>
+        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+          <a class="btn-secondary" href="./dashboard.html">Dashboard로</a>
+          <a class="btn-primary" href="./collection.html"><i class="ri-stack-line"></i>컬렉션 보기</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

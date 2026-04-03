@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">
+        <span class="font-poppins font-bold">My Collection</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active" href="./dashboard.html"><i class="ri-dashboard-line"></i><span>Dashboard</span></a>
+        <a class="nav-item" href="./collection.html"><i class="ri-stack-line"></i><span>My Collection</span></a>
+        <a class="nav-item" href="./market-trends.html"><i class="ri-line-chart-line"></i><span>Market Trends</span></a>
+        <a class="nav-item" href="./settings.html"><i class="ri-settings-3-line"></i><span>Settings</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="profile-card">
+          <div class="avatar"><i class="ri-user-line"></i></div>
+          <div class="profile-meta">
+            <p class="profile-name">Collector</p>
+            <p class="profile-tier">Premium</p>
+          </div>
+          <i class="ri-arrow-right-s-line profile-chevron"></i>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="header">
+      <div>
+        <h2 class="font-poppins font-bold text-xl">Dashboard</h2>
+        <p class="text-xs text-muted" style="margin-top: 6px;">Home &gt; Dashboard</p>
+      </div>
+      <div class="header-right">
+        <div class="searchbar">
+          <i class="ri-search-line"></i>
+          <input type="text" placeholder="Search by player, cert number..." aria-label="search">
+          <button class="icon-btn" type="button" aria-label="filter"><i class="ri-filter-3-line"></i></button>
+        </div>
+        <button class="icon-btn notif-btn" type="button" aria-label="notifications">
+          <i class="ri-notification-3-line"></i>
+          <span class="dot"></span>
+        </button>
+        <button class="icon-btn profile-btn" type="button" aria-label="profile">
+          <i class="ri-user-line"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- 상단 4칸 요약 -->
+      <div class="grid-4">
+        <div class="glass-card">
+          <div class="icon-box"><i class="ri-money-dollar-circle-line text-2xl text-gold"></i></div>
+          <p class="text-xs text-muted font-semibold tracking-wider mb-2 uppercase">Total Portfolio Value</p>
+          <p class="text-4xl font-poppins font-bold mb-2" id="total-value">—</p>
+          <div class="flex-between" style="justify-content:flex-start;gap:8px;">
+            <span class="text-sm font-semibold" id="portfolio-change-abs" style="color:var(--text-secondary);">—</span>
+            <span class="text-xs" id="portfolio-change-pct" style="color:var(--text-secondary);">—</span>
+          </div>
+        </div>
+        <div class="glass-card">
+          <div class="icon-box"><i class="ri-stack-line text-2xl text-gold"></i></div>
+          <p class="text-xs text-muted font-semibold tracking-wider mb-2 uppercase">Total Cards</p>
+          <p class="text-4xl font-poppins font-bold" id="total-cards">—</p>
+          <p class="text-xs text-muted mt-2" id="snapshot-count">시세 수집: — 카드</p>
+        </div>
+        <div class="glass-card">
+          <div class="icon-box"><i class="ri-trophy-line text-2xl text-gold"></i></div>
+          <p class="text-xs text-muted font-semibold tracking-wider mb-2 uppercase">PSA 10 Gems</p>
+          <p class="text-4xl font-poppins font-bold" id="psa10-count">—</p>
+          <p class="text-xs text-muted mt-2" id="last-collected">마지막 수집: —</p>
+        </div>
+        <div class="glass-card">
+          <div class="icon-box" style="background: rgba(76, 175, 80, 0.12);"><i class="ri-arrow-up-line text-2xl text-up"></i></div>
+          <p class="text-xs text-muted font-semibold tracking-wider mb-2 uppercase">Top Gainer</p>
+          <p class="text-lg font-poppins font-bold mb-1" id="top-gainer-name" style="line-height:1.3;">—</p>
+          <p class="text-xl font-poppins font-bold" id="top-gainer-price" style="color:var(--gold-base);">—</p>
+        </div>
+      </div>
+
+      <!-- 포트폴리오 가치 트렌드 + Top Performers -->
+      <div class="grid-3">
+        <div class="glass-card" style="padding-bottom: 20px;">
+          <div class="flex-between" style="margin-bottom:16px;">
+            <h3 class="font-poppins font-bold text-xl">Portfolio Value Trend</h3>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="text-xs text-muted" id="trend-updated">—</span>
+              <button class="btn-range" id="btn-collect" type="button" style="padding:5px 12px; font-size:0.75rem;">
+                <i class="ri-refresh-line"></i> 수집
+              </button>
+            </div>
+          </div>
+          <div style="height:200px; position:relative;">
+            <svg id="trend-chart" viewBox="0 0 500 180" preserveAspectRatio="none" style="width:100%;height:100%;">
+              <text x="250" y="98" text-anchor="middle" fill="var(--text-secondary)" font-size="13">
+                시세 수집 후 차트가 표시됩니다
+              </text>
+            </svg>
+          </div>
+          <div class="flex-between" style="margin-top:8px;">
+            <span class="text-xs text-muted" id="trend-min">—</span>
+            <span class="text-xs text-muted" id="trend-max">—</span>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="flex-between mb-4">
+            <h3 class="font-poppins font-bold text-xl">Top Performers</h3>
+            <a href="./market-trends.html" class="text-sm text-gold" style="text-decoration:none;">View All</a>
+          </div>
+          <div id="top-performers"></div>
+        </div>
+      </div>
+
+      <!-- 최근 시세 수집 이력 -->
+      <div class="glass-card">
+        <div class="flex-between" style="margin-bottom:16px;">
+          <h3 class="font-poppins font-bold text-xl">Recent Market Snapshots</h3>
+          <span class="text-xs text-muted" id="snapshots-fetched-at">—</span>
+        </div>
+        <div id="snapshots-list" style="display:flex; flex-direction:column; gap:10px;">
+          <p class="text-xs text-muted">시세 수집 버튼을 눌러 데이터를 가져오세요.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+<script>
+  const apiBase = new URLSearchParams(location.search).get("apiBase") || "http://localhost:4000";
+
+  function apiFetch(path, opts) {
+    const headers = new Headers(opts?.headers);
+    if (/ngrok-free\.app|ngrok\.io|ngrok\.app/i.test(apiBase)) {
+      headers.set("ngrok-skip-browser-warning", "true");
+    }
+    return fetch(apiBase + path, { ...opts, headers });
+  }
+
+  function fmt(v) {
+    return "$" + Number(v).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  function escHtml(s) {
+    return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  function relTime(iso) {
+    const diff = (Date.now() - new Date(iso)) / 1000;
+    if (diff < 60) return "방금 전";
+    if (diff < 3600) return Math.floor(diff / 60) + "분 전";
+    if (diff < 86400) return Math.floor(diff / 3600) + "시간 전";
+    return Math.floor(diff / 86400) + "일 전";
+  }
+
+  // ── 카드 수 / PSA10 ──────────────────────────
+  async function loadSummary() {
+    try {
+      const res = await apiFetch("/api/dashboard/summary");
+      if (!res.ok) return;
+      const d = await res.json();
+      document.getElementById("total-cards").textContent = d.totalCards ?? "—";
+      document.getElementById("psa10-count").textContent = d.psa10Count ?? "—";
+    } catch {}
+  }
+
+  // ── 스냅샷 요약 → 총 포트폴리오 가치 + 변동 ──
+  async function loadSnapshotSummary() {
+    try {
+      const res = await apiFetch("/api/snapshots/summary");
+      if (!res.ok) return;
+      const d = await res.json();
+
+      if (d.totalMarketValue) {
+        document.getElementById("total-value").textContent = fmt(d.totalMarketValue);
+      }
+      if (d.snapshotCount) {
+        document.getElementById("snapshot-count").textContent = `시세 수집: ${d.snapshotCount}개 카드`;
+      }
+      if (d.latestSnapshot) {
+        document.getElementById("last-collected").textContent = `마지막 수집: ${relTime(d.latestSnapshot)}`;
+        document.getElementById("trend-updated").textContent = relTime(d.latestSnapshot);
+        document.getElementById("snapshots-fetched-at").textContent = new Date(d.latestSnapshot).toLocaleString("ko-KR");
+      }
+
+      const pct = parseFloat(d.portfolioChangePercent) || 0;
+      const pctEl = document.getElementById("portfolio-change-pct");
+      pctEl.textContent = (pct >= 0 ? "+" : "") + pct.toFixed(2) + "%";
+      pctEl.style.color = pct >= 0 ? "var(--price-up)" : "var(--price-down)";
+    } catch {}
+  }
+
+  // ── Top Gainer ────────────────────────────────
+  async function loadTopGainer() {
+    try {
+      const res = await apiFetch("/api/dashboard/top-gainer");
+      if (!res.ok) return;
+      const card = await res.json();
+      const name = [card.subject, card.grade].filter(Boolean).join(" · ");
+      document.getElementById("top-gainer-name").textContent = name || "—";
+      document.getElementById("top-gainer-price").textContent = card.currentPrice ? fmt(card.currentPrice) : "—";
+    } catch {}
+  }
+
+  // ── Top Performers (스냅샷 최신가 기준) ──────
+  async function loadTopPerformers() {
+    try {
+      const res = await apiFetch("/api/snapshots/latest");
+      if (!res.ok) return;
+      const snaps = await res.json();
+
+      const container = document.getElementById("top-performers");
+      if (!snaps.length) {
+        container.innerHTML = '<p class="text-xs text-muted">시세 수집 후 표시됩니다.</p>';
+        return;
+      }
+
+      const top5 = snaps
+        .filter((s) => s.avgPrice)
+        .sort((a, b) => b.avgPrice - a.avgPrice)
+        .slice(0, 5);
+
+      container.innerHTML = top5.map((s) => `
+        <div class="performer-item">
+          <img src="${escHtml(s.imageUrl || "../images/ohtani.jpg")}" alt="${escHtml(s.subject)}" class="card-img">
+          <div style="flex:1;">
+            <p class="font-poppins font-semibold text-sm">${escHtml(s.subject)}</p>
+            <p class="text-xs text-muted mt-1">${escHtml([s.year, s.setName, s.grade].filter(Boolean).join(" · "))}</p>
+          </div>
+          <div style="text-align:right;">
+            <p class="font-poppins font-semibold text-sm">${fmt(s.avgPrice)}</p>
+            <p class="text-xs text-muted">${s.saleCount}개 거래</p>
+          </div>
+        </div>`).join("");
+    } catch {}
+  }
+
+  // ── 포트폴리오 트렌드 차트 (상위 카드 이력 합산) ─
+  async function loadTrendChart() {
+    try {
+      // 상위 카드 ID 목록 먼저 가져오기
+      const topRes = await apiFetch("/api/dashboard/top-cards?limit=5");
+      if (!topRes.ok) return;
+      const topCards = await topRes.json();
+      if (!topCards.length) return;
+
+      // 상위 카드 이력 병렬 조회
+      const histories = await Promise.all(
+        topCards.map((c) =>
+          apiFetch(`/api/snapshots/${c.id}/history?limit=20`)
+            .then((r) => r.json())
+            .catch(() => [])
+        )
+      );
+
+      // 타임스탬프 기준으로 포트폴리오 합산
+      const timeMap = {};
+      histories.forEach((hist) => {
+        hist.forEach((pt) => {
+          const t = new Date(pt.fetchedAt).toISOString().substring(0, 13); // 시간 단위 버킷
+          timeMap[t] = (timeMap[t] || 0) + (parseFloat(pt.avgPrice) || 0);
+        });
+      });
+
+      const points = Object.entries(timeMap)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([t, v]) => ({ t, v }));
+
+      if (points.length < 2) return;
+
+      const W = 500, H = 170, PAD = 16;
+      const vals = points.map((p) => p.v);
+      const minV = Math.min(...vals), maxV = Math.max(...vals);
+      const range = maxV - minV || 1;
+
+      const pts = points.map((p, i) => {
+        const x = PAD + (i / (points.length - 1)) * (W - PAD * 2);
+        const y = H - PAD - ((p.v - minV) / range) * (H - PAD * 2);
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      });
+
+      const line = "M" + pts.join(" L");
+      const area = line + ` L${W - PAD},${H} L${PAD},${H} Z`;
+
+      document.getElementById("trend-chart").innerHTML = `
+        <defs>
+          <linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="${area}" fill="url(#tg)"/>
+        <path d="${line}" fill="none" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+      document.getElementById("trend-min").textContent = `최저 ${fmt(minV)}`;
+      document.getElementById("trend-max").textContent = `최고 ${fmt(maxV)}`;
+    } catch {}
+  }
+
+  // ── 최근 스냅샷 목록 ──────────────────────────
+  async function loadSnapshotsList() {
+    try {
+      const res = await apiFetch("/api/snapshots/latest");
+      if (!res.ok) return;
+      const snaps = await res.json();
+      const list = document.getElementById("snapshots-list");
+
+      if (!snaps.length) {
+        list.innerHTML = '<p class="text-xs text-muted">수집된 스냅샷이 없습니다.</p>';
+        return;
+      }
+
+      const sorted = [...snaps].sort((a, b) => new Date(b.fetchedAt) - new Date(a.fetchedAt));
+      list.innerHTML = sorted.map((s) => `
+        <div class="timeline-item" style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-base);">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="activity-icon" style="background:var(--gold-muted); color:var(--gold-base);">
+              <i class="ri-price-tag-3-line"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold">${escHtml(s.subject)} ${escHtml(s.grade || "")}</p>
+              <p class="text-xs text-muted">${escHtml(s.query)} · ${relTime(s.fetchedAt)}</p>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <p class="font-poppins font-bold text-sm">${s.avgPrice ? fmt(s.avgPrice) : "—"}</p>
+            <p class="text-xs text-muted">${s.saleCount ?? 0}개 거래</p>
+          </div>
+        </div>`).join("");
+    } catch {}
+  }
+
+  // ── 수동 수집 트리거 ──────────────────────────
+  async function triggerCollection() {
+    const btn = document.getElementById("btn-collect");
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ri-loader-4-line" style="animation:spin 0.8s linear infinite;display:inline-block;"></i> 수집 중...';
+
+    try {
+      await apiFetch("/api/snapshots/run", { method: "POST" });
+    } catch (e) {
+      console.error("collect error", e);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="ri-refresh-line"></i> 수집';
+    }
+  }
+
+  function loadAll() {
+    loadSummary();
+    loadSnapshotSummary();
+    loadTopGainer();
+    loadTopPerformers();
+    loadTrendChart();
+    loadSnapshotsList();
+  }
+
+  const spinStyle = document.createElement("style");
+  spinStyle.textContent = "@keyframes spin { to { transform: rotate(360deg); } }";
+  document.head.appendChild(spinStyle);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("btn-collect").addEventListener("click", triggerCollection);
+    loadAll();
+  });
+</script>
+</html>

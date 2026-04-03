@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Collection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-brand">
+        <span class="font-poppins font-bold">My Collection</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="./dashboard.html"><i class="ri-dashboard-line"></i><span>Dashboard</span></a>
+        <a class="nav-item active" href="./collection.html"><i class="ri-stack-line"></i><span>My Collection</span></a>
+        <a class="nav-item" href="./market-trends.html"><i class="ri-line-chart-line"></i><span>Market Trends</span></a>
+        <a class="nav-item" href="./settings.html"><i class="ri-settings-3-line"></i><span>Settings</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="profile-card">
+          <div class="avatar"><i class="ri-user-line"></i></div>
+          <div class="profile-meta">
+            <p class="profile-name">Collector</p>
+            <p class="profile-tier">Premium</p>
+          </div>
+          <i class="ri-arrow-right-s-line profile-chevron"></i>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="header">
+      <div>
+        <h2 class="font-poppins font-bold text-xl">My Collection</h2>
+        <p class="text-xs text-muted" style="margin-top: 6px;">Home &gt; Collection</p>
+      </div>
+      <div class="header-right">
+        <div class="searchbar">
+          <i class="ri-search-line"></i>
+          <input type="text" placeholder="Search by player, cert number..." aria-label="search">
+          <button class="icon-btn" type="button" aria-label="filter"><i class="ri-filter-3-line"></i></button>
+        </div>
+        <button class="icon-btn notif-btn" type="button" aria-label="notifications">
+          <i class="ri-notification-3-line"></i>
+          <span class="dot"></span>
+        </button>
+        <button class="icon-btn profile-btn" id="psa-token-btn" type="button" aria-label="profile">
+          <i class="ri-user-line"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="collection-top">
+        <div class="collection-top-left">
+          <div class="glass-card collection-summary">
+            <div class="summary-main">
+              <div>
+                <p class="summary-label">Total Portfolio Value</p>
+                <p class="summary-value">$24,500</p>
+              </div>
+              <div>
+                <p class="summary-label">Cards / Grades</p>
+                <p class="summary-text">Cards: 2 · PSA 10: 2 · Raw: 0</p>
+              </div>
+              <div>
+                <p class="summary-label">24h Change</p>
+                <p class="summary-text summary-change-up">+$1,250 (5.2%)</p>
+              </div>
+              <div class="summary-updated">
+                <span class="summary-label">최근 시세 업데이트</span>
+                <span class="summary-text">10분 전</span>
+                <button class="icon-btn summary-refresh" type="button" aria-label="refresh prices">
+                  <i class="ri-refresh-line"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="btn-primary" href="#add-card"> <i class="ri-add-line"></i>새로운 카드 등록하기</a>
+      </div>
+
+      <div class="filters">
+        <div class="search-row">
+          <div class="search-input">
+            <i class="ri-search-line"></i>
+            <input type="text" placeholder="선수 이름 또는 PSA/BGS 인증 번호로 검색..." aria-label="collection search">
+            <button class="icon-btn" type="button" aria-label="clear"><i class="ri-close-line"></i></button>
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="filter-left">
+            <select class="select">
+              <option>모든 등급사</option>
+              <option>PSA</option>
+              <option>BGS</option>
+              <option>SGC</option>
+            </select>
+            <select class="select">
+              <option>모든 등급</option>
+              <option>PSA 10</option>
+              <option>BGS 9.5</option>
+              <option>PSA 9</option>
+            </select>
+            <select class="select">
+              <option>모든 브랜드</option>
+              <option>Topps</option>
+              <option>Panini</option>
+              <option>RAW(등급없음)</option>
+            </select>
+            <select class="select">
+              <option>가치순</option>
+              <option>선수명순</option>
+              <option>연도순</option>
+              <option>등급순</option>
+            </select>
+            <span class="count">총 <span class="count-strong" id="cards-count">0</span>장</span>
+          </div>
+          <div class="view-toggle">
+            <button class="vt-btn active" type="button" aria-label="grid"><i class="ri-grid-line"></i></button>
+            <button class="vt-btn" type="button" aria-label="list"><i class="ri-list-check"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="collection-grid" id="collection-grid">
+        <!-- JS로 카드 리스트 렌더링 -->
+      </div>
+
+      <!-- Static Modal (CSS :target) -->
+      <section id="add-card" class="modal">
+        <a class="modal-backdrop" href="#" aria-label="close"></a>
+        <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Add card">
+          <div class="modal-head">
+            <div>
+              <h3 class="font-poppins font-bold text-xl">카드 추가</h3>
+              <p class="text-sm text-muted" style="margin-top:6px;">Cert 기반 자동 등록 / 수동 등록 UI 시안</p>
+            </div>
+            <a class="icon-btn" href="#" aria-label="close"><i class="ri-close-line"></i></a>
+          </div>
+          <div class="modal-body">
+
+            <input type="radio" id="mode-auto" name="cardMode" class="mode-radio" checked>
+            <input type="radio" id="mode-manual" name="cardMode" class="mode-radio">
+            <div class="segmented mode-tabs" style="margin-bottom:16px; width:100%; justify-content:space-between;">
+              <label class="seg-btn mode-tab" for="mode-auto" style="flex:1; justify-content:center;">Cert 번호로 자동 등록</label>
+              <label class="seg-btn mode-tab" for="mode-manual" style="flex:1; justify-content:center;">직접 입력 (수동)</label>
+            </div>
+
+
+            <div class="auto-mode" style="margin-bottom:20px;">
+              <p class="text-sm text-muted" style="margin-bottom:12px;">
+                PSA 등 그레이딩 회사의 API를 이용해 Cert 번호로 기본 정보를 불러옵니다.
+              </p>
+              <div class="form-grid">
+                <div class="field">
+                  <label>그레이딩 회사</label>
+                  <select class="select">
+                    <option>PSA</option>
+                    <option>BGS</option>
+                    <option>SGC</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Cert Number</label>
+                  <input placeholder="예: 76348771">
+                </div>
+              </div>
+              <div style="margin-top:14px; display:flex; gap:10px; align-items:center;">
+                <a class="btn-primary" href="#"><i class="ri-search-line"></i>조회하기</a>
+                <span class="text-xs text-muted">정적 화면: 실제 조회/검증은 나중에 JS/백엔드에서 처리</span>
+              </div>
+
+              <!-- 조회 결과 미리보기 (성공 케이스 예시) -->
+              <div class="glass-card" style="margin-top:18px; padding:16px;">
+                <div class="flex-between" style="align-items:flex-start; gap:12px;">
+                  <div>
+                    <p class="text-xs text-muted">Subject</p>
+                    <p class="font-poppins font-bold text-sm">SHOHEI OHTANI</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-muted">Grade</p>
+                    <p class="font-poppins font-bold text-sm">GEM MT 10</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-muted">Cert</p>
+                    <p class="font-mono text-sm">76348771</p>
+                  </div>
+                </div>
+                <div style="margin-top:10px; font-size:12px;" class="text-muted">
+                  2018 · TOPPS GOLD LABEL · Card #17 · CLASS 1 · Category: BASEBALL CARDS
+                </div>
+                <div style="margin-top:8px; font-size:12px;" class="text-muted">
+                  Reverse Barcode: Yes · Hologram: Yes · Pop Higher: 12 / Pop Total: 340
+                </div>
+              </div>
+            </div>
+
+            <!-- 탭 2: 수동 등록 (Raw 카드 및 오류 대비) -->
+            <div class="manual-mode">
+              <p class="text-sm text-muted" style="margin-bottom:12px;">
+                Raw 카드이거나 Cert 조회가 되지 않을 때 직접 정보를 입력해 등록합니다.
+              </p>
+              <div class="form-grid">
+                <div class="field">
+                  <label>Player Name (선수 이름)</label>
+                  <input id="manual-subject" placeholder="예: SHOHEI OHTANI">
+                </div>
+                <div class="field">
+                  <label>Year</label>
+                  <input id="manual-year" placeholder="예: 2018">
+                </div>
+                <div class="field">
+                  <label>Brand / Set Name</label>
+                  <input id="manual-setName" placeholder="예: TOPPS GOLD LABEL">
+                </div>
+                <div class="field">
+                  <label>Card Number</label>
+                  <input id="manual-cardNumber" placeholder="예: 17, BDC14">
+                </div>
+                <div class="field">
+                  <label>Variety / Pedigree</label>
+                  <input id="manual-variety" placeholder="예: CLASS 1, CHROME-REFRACTOR">
+                </div>
+                <div class="field">
+                  <label>Category</label>
+                  <input id="manual-category" placeholder="예: BASEBALL CARDS">
+                </div>
+                <div class="field">
+                  <label>Grade</label>
+                  <input id="manual-grade" placeholder="예: GEM MT 10 또는 Raw">
+                </div>
+                <div class="field">
+                  <label>Cert Number</label>
+                  <input id="manual-certNumber" placeholder="Optional — Raw 카드라면 비워두기">
+                </div>
+              </div>
+
+              <div style="margin-top:14px; display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+                <div class="field" style="flex:1 1 220px;">
+                  <label>이미지 URL</label>
+                  <input id="manual-imageUrl" placeholder="예: https://... 카드 정면 사진">
+                </div>
+                <div class="field" style="flex:0 0 200px;">
+                  <label>또는 파일 업로드</label>
+                  <input type="file" accept="image/*">
+                  <p class="text-xs text-muted" style="margin-top:4px;"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <a class="btn-secondary" href="#">취소</a>
+            <button id="manual-save-btn" class="btn-primary" type="button"><i class="ri-check-line"></i>카드 등록</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+<script>
+  // 1) URL에 ?apiBase=https://xxxx.ngrok-free.app 붙이면 그 주소로 API 호출
+  const API_BASE =
+    new URLSearchParams(window.location.search).get("apiBase") ||
+    "http://localhost:4000";
+  function apiFetch(path, options = {}) {
+    const headers = new Headers(options.headers);
+    if (/ngrok-free\.app|ngrok\.io|ngrok\.app/i.test(API_BASE)) {
+      headers.set("ngrok-skip-browser-warning", "true");
+    }
+    return fetch(API_BASE + path, { ...options, headers });
+  }
+
+  function formatCardSubtitle(card) {
+    const parts = [];
+    if (card.year) parts.push(card.year);
+    if (card.setName) parts.push(card.setName);
+    if (card.cardNumber) parts.push(`Card #${card.cardNumber}`);
+    if (card.variety) parts.push(card.variety);
+    return parts.join(" · ");
+  }
+
+  function createCardTile(card) {
+    const article = document.createElement("article");
+    article.className = "card-tile";
+
+    const media = document.createElement("div");
+    media.className = "card-media";
+
+    const img = document.createElement("img");
+    img.src = card.imageUrl || "../images/error.jpg";
+    img.alt = card.subject || "card image";
+    media.appendChild(img);
+
+    const gradePill = document.createElement("div");
+    gradePill.className = "grade-pill grade-10";
+    gradePill.textContent = card.grade || "N/A";
+    media.appendChild(gradePill);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "card-delete-btn";
+    deleteBtn.type = "button";
+    deleteBtn.setAttribute("aria-label", "delete card");
+    deleteBtn.innerHTML = '<i class="ri-delete-bin-6-line"></i>';
+    deleteBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      await deleteCard(card, deleteBtn);
+    });
+    media.appendChild(deleteBtn);
+
+    const lockBtn = document.createElement("button");
+    lockBtn.className = "pc-toggle";
+    lockBtn.type = "button";
+    lockBtn.setAttribute("aria-label", "toggle pc");
+    lockBtn.innerHTML = '<i class="ri-lock-unlock-line"></i>';
+    media.appendChild(lockBtn);
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+
+    const title = document.createElement("h3");
+    title.className = "card-title";
+    title.textContent = card.subject || "Unknown";
+    body.appendChild(title);
+
+    const sub = document.createElement("p");
+    sub.className = "card-sub";
+    sub.textContent = formatCardSubtitle(card);
+    body.appendChild(sub);
+
+    const meta = document.createElement("div");
+    meta.className = "card-meta";
+
+    const metaLeft = document.createElement("div");
+    const label = document.createElement("p");
+    label.className = "meta-label";
+    label.textContent = "Current Value";
+    const value = document.createElement("p");
+    value.className = "meta-value";
+    value.textContent = card.currentPrice ? `$${card.currentPrice}` : "—";
+    metaLeft.appendChild(label);
+    metaLeft.appendChild(value);
+
+    const metaRight = document.createElement("div");
+    metaRight.className = "chg up";
+    metaRight.textContent = card.grader || "—";
+
+    meta.appendChild(metaLeft);
+    meta.appendChild(metaRight);
+    body.appendChild(meta);
+
+    const foot = document.createElement("div");
+    foot.className = "card-foot";
+    const cert = document.createElement("p");
+    cert.className = "meta-cert";
+    cert.textContent = card.certNumber ? `Cert: ${card.certNumber}` : "Cert: —";
+    foot.appendChild(cert);
+    body.appendChild(foot);
+
+    article.appendChild(media);
+    article.appendChild(body);
+    return article;
+  }
+
+  async function deleteCard(card, btnEl) {
+    const id = card?.id;
+    if (!id) {
+      alert("삭제할 카드 id를 찾지 못했습니다.");
+      return;
+    }
+
+    const label = card.subject ? `${card.subject}` : `id: ${id}`;
+    const ok = confirm(`정말 삭제하시겠습니까?\n(${label})`);
+    if (!ok) return;
+
+    const prevHtml = btnEl?.innerHTML;
+    if (btnEl) {
+      btnEl.disabled = true;
+      btnEl.setAttribute("aria-busy", "true");
+      btnEl.innerHTML = '<i class="ri-loader-4-line"></i>';
+    }
+
+    try {
+      const res = await apiFetch(`/api/cards/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        console.error("delete card failed", err);
+        alert("카드 삭제에 실패했습니다.");
+        return;
+      }
+      await loadCards();
+    } catch (e) {
+      console.error(e);
+      alert("서버 통신 중 오류가 발생했습니다.");
+    } finally {
+      if (btnEl) {
+        btnEl.disabled = false;
+        btnEl.removeAttribute("aria-busy");
+        btnEl.innerHTML = prevHtml || '<i class="ri-delete-bin-6-line"></i>';
+      }
+    }
+  }
+
+  async function loadCards() {
+    try {
+      const res = await apiFetch("/api/cards");
+      if (!res.ok) {
+        console.error("failed to fetch cards");
+        return;
+      }
+      const cards = await res.json();
+      const grid = document.getElementById("collection-grid");
+      grid.innerHTML = "";
+      if (!cards.length) {
+        const empty = document.createElement("p");
+        empty.className = "text-muted";
+        empty.textContent = "등록된 카드가 없습니다. 새로운 카드를 등록해보세요.";
+        grid.appendChild(empty);
+      } else {
+        cards.forEach((c) => grid.appendChild(createCardTile(c)));
+      }
+      const countEl = document.getElementById("cards-count");
+      if (countEl) countEl.textContent = cards.length;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function saveManualCard() {
+    const subject = document.getElementById("manual-subject").value.trim();
+    const year = document.getElementById("manual-year").value.trim();
+    const setName = document.getElementById("manual-setName").value.trim();
+    const cardNumber = document.getElementById("manual-cardNumber").value.trim();
+    const variety = document.getElementById("manual-variety").value.trim();
+    const category = document.getElementById("manual-category").value.trim();
+    const grade = document.getElementById("manual-grade").value.trim();
+    const certNumber = document.getElementById("manual-certNumber").value.trim();
+    const imageUrl = document.getElementById("manual-imageUrl").value.trim();
+
+    if (!subject || !year || !setName || !cardNumber) {
+      alert("Player Name / Year / Brand / Card Number 는 필수입니다.");
+      return;
+    }
+    if (year.length > 4) {
+      alert("Year는 4자리 (예: 2018)로 입력해주세요.");
+      return;
+    }
+
+    try {
+      const res = await apiFetch("/api/cards", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject,
+          year,
+          setName,
+          cardNumber,
+          variety,
+          category,
+          grade,
+          grader: grade.toLowerCase().includes("raw") ? "RAW" : "PSA",
+          certNumber,
+          imageUrl,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        console.error("create card failed", err);
+        alert("카드 등록에 실패했습니다.");
+        return;
+      }
+
+      const data = await res.json();
+      alert(`카드가 등록되었습니다. (id: ${data.id})`);
+      await loadCards();
+    } catch (e) {
+      console.error(e);
+      alert("서버 통신 중 오류가 발생했습니다.");
+    }
+  }
+
+  document
+    .getElementById("manual-save-btn")
+    .addEventListener("click", saveManualCard);
+
+
+  (function initAutoMode() {
+    const autoLookupBtn = document.querySelector(".auto-mode a.btn-primary");
+    const certInput = document.querySelector(".auto-mode input[placeholder='예: 76348771']");
+    const companySelect = document.querySelector(".auto-mode select.select");
+    if (!autoLookupBtn || !certInput) return;
+
+    autoLookupBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const certNumber = certInput.value.trim();
+      const company = companySelect?.value || "PSA";
+
+      if (!certNumber) {
+        alert("Cert Number를 입력해 주세요.");
+        return;
+      }
+
+      autoLookupBtn.classList.add("loading");
+      autoLookupBtn.setAttribute("aria-busy", "true");
+      autoLookupBtn.innerHTML = '<i class="ri-loader-4-line"></i> 조회 중...';
+
+      try {
+        const res = await apiFetch("/api/cards/auto", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ certNumber, certificationType: company.toUpperCase() }),
+        });
+
+        const text = await res.text();
+        let data = null;
+        try {
+          data = text ? JSON.parse(text) : null;
+        } catch {
+          data = { raw: text };
+        }
+
+        if (!res.ok) {
+          const msg = data?.message || data?.error || `요청 실패 (status: ${res.status})`;
+          alert("자동 등록에 실패했습니다.\n\n" + msg);
+          return;
+        }
+
+        alert("PSA Cert 정보를 기반으로 카드가 등록되었습니다.");
+        await loadCards();
+      } catch (err) {
+        console.error("[auto-card] 에러", err);
+        alert("자동 등록 중 오류가 발생했습니다. 콘솔 로그를 확인해 주세요.");
+      } finally {
+        autoLookupBtn.classList.remove("loading");
+        autoLookupBtn.removeAttribute("aria-busy");
+        autoLookupBtn.innerHTML = '<i class="ri-search-line"></i>조회하기';
+      }
+    });
+  })();
+
+  loadCards();
+
+  // ── 이스터에그: 5회 클릭 → hidden.html 이동 ─────────────
+  (function () {
+    const summaryCard = document.querySelector(".collection-summary");
+    if (!summaryCard) return;
+
+    let clickCount = 0;
+    let clickTimer = null;
+
+    summaryCard.addEventListener("click", () => {
+      clickCount++;
+
+      // 미세한 scale 힌트 (1~4회)
+      summaryCard.style.transition = "transform 0.08s";
+      summaryCard.style.transform = "scale(1.015)";
+      setTimeout(() => { summaryCard.style.transform = "scale(1)"; }, 80);
+
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
+
+      if (clickCount >= 5) {
+        clickCount = 0;
+        clearTimeout(clickTimer);
+        // 세션 토큰 발급 후 이동 (직접 URL 접근 차단용)
+        const token = btoa(Date.now() + ":secret");
+        sessionStorage.setItem("__vault_token", token);
+        const apiParam = new URLSearchParams(location.search).get("apiBase") || "";
+        location.href = "./hidden.html" + (apiParam ? "?apiBase=" + encodeURIComponent(apiParam) : "");
+      }
+    });
+  })();
+</script>
+</html>
