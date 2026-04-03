@@ -2,7 +2,7 @@
 
 > **스포츠 카드 컬렉션 가치 추적 및 관리 웹 애플리케이션** ⚾
 > 
-> [🔗 프론트엔드 라이브 데모]([https://chyoung001.github.io/My_collection_/my_collection_frontend/src/pages/dashboard.html](https://chyoung001.github.io/My_collection_/))
+> [🔗 프론트엔드 라이브 데모](https://chyoung001.github.io/My_collection_/))
 
 
 <br/>
