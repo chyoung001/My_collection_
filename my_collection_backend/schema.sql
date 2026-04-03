@@ -1,4 +1,4 @@
--- Database: my_collection_backenddb
+-- Database: my_collection_backenddb (schema init)
 
 CREATE TABLE IF NOT EXISTS cards (
   id SERIAL PRIMARY KEY,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS cards (
   cert_number    VARCHAR(50),
   image_url      TEXT,
 
-  -- PSA 외부 조회 데이터 원본 저장용
+  -- PSA external data (raw)
   certification_type VARCHAR(20),
   is_hologram        VARCHAR(10),
   is_reverse_barcode VARCHAR(10),
@@ -41,7 +41,7 @@ ALTER TABLE cards ADD COLUMN IF NOT EXISTS psa_population JSONB;
 ALTER TABLE cards ADD COLUMN IF NOT EXISTS psa_images JSONB;
 ALTER TABLE cards ADD COLUMN IF NOT EXISTS dna_cert JSONB;
 
--- eBay 시세 스냅샷 이력 테이블
+-- market price snapshot history
 CREATE TABLE IF NOT EXISTS market_snapshots (
   id           SERIAL PRIMARY KEY,
   card_id      INTEGER REFERENCES cards(id) ON DELETE CASCADE,

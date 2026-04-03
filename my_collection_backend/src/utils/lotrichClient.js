@@ -4,7 +4,7 @@ const LOTRICH_URL =
 const LOTRICH_HEADERS = {
   "Content-Type": "application/json",
   accept: "application/json",
-  "x-app-id": "69bc3752e35a008a8a8b8393",
+  "x-app-id": "69bc3752e35a008a",
   "x-origin-url": "https://lotrichvault.com/",
 };
 
@@ -12,7 +12,7 @@ const LOTRICH_HEADERS = {
  * LotRICH Vault API — Gemini Grounding 기반 eBay 완료 거래 시세 조회 (AJAX 버전)
  *
  * @param {string} cardName  - 카드 풀네임 (예: "2026 Topps All Kings Babe Ruth PSA 9 Baseball")
- * @returns {Promise<{average_price: number, min_price: number, max_price: number, sale_count: number, trend: string, trend_percent: number, confidence: string, analysis: string, period_used: string, recent_sales: object[]}>}
+ * @returns {{ average_price, min_price, max_price, sale_count, trend, trend_percent, confidence, analysis, period_used, recent_sales }}
  */
 export function fetchCardPrice(cardName) {
   return new Promise((resolve, reject) => {

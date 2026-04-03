@@ -344,14 +344,46 @@
     btn.disabled = true;
     btn.innerHTML = '<i class="ri-loader-4-line" style="animation:spin 0.8s linear infinite;display:inline-block;"></i> 수집 중...';
 
+    // 수집 시작 전 현재 최신 스냅샷 시각 기록
+    let baselineSnapshot = null;
+    try {
+      const r = await apiFetch("/api/snapshots/summary");
+      if (r.ok) {
+        const d = await r.json();
+        baselineSnapshot = d.latestSnapshot || null;
+      }
+    } catch {}
+
     try {
       await apiFetch("/api/snapshots/run", { method: "POST" });
     } catch (e) {
       console.error("collect error", e);
-    } finally {
       btn.disabled = false;
       btn.innerHTML = '<i class="ri-refresh-line"></i> 수집';
+      return;
     }
+
+    // 수집은 백그라운드 실행(202) — 최대 120초간 5초 간격으로 폴링, 새 데이터 감지 시 갱신
+    const POLL_INTERVAL = 5000;
+    const POLL_TIMEOUT  = 120_000;
+    const started = Date.now();
+
+    const poll = setInterval(async () => {
+      try {
+        const r = await apiFetch("/api/snapshots/summary");
+        if (!r.ok) return;
+        const d = await r.json();
+        const isNew = d.latestSnapshot && d.latestSnapshot !== baselineSnapshot;
+        const timedOut = Date.now() - started >= POLL_TIMEOUT;
+
+        if (isNew || timedOut) {
+          clearInterval(poll);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="ri-refresh-line"></i> 수집';
+          loadAll(); // 새 데이터로 화면 전체 갱신
+        }
+      } catch {}
+    }, POLL_INTERVAL);
   }
 
   function loadAll() {

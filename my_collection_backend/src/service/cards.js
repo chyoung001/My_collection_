@@ -15,7 +15,7 @@ const router = Router();
  *       200:
  *         description: 카드 리스트를 반환합니다.
  */
-router.get("/", async (req, res) => {
+router.get("/", async (_req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, subject, year, set_name AS "setName", card_number AS "cardNumber",
@@ -274,7 +274,7 @@ router.delete("/:id", async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "card_not_found" });
     }
-    res.status(204).json({ id: result.rows[0].id });
+    res.status(200).json({ id: result.rows[0].id });
   } catch (err) {
     console.error("DELETE /api/cards/:id error", err);
     res.status(500).json({ error: "failed_to_delete_card" });
